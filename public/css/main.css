@@ -1,30 +1,270 @@
-html, body {
-    background-color: lightblue;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
+/*
+  CSE 340 Service Network — main stylesheet
+  ------------------------------------------
+  Design idea: this is a NETWORK connecting volunteers to organizations
+  and projects, so the visual language leans into that: a bold indigo
+  brand color, and category/organization content styled as connected
+  "nodes" (colored accent bars) instead of generic shadowed cards.
+*/
+
+/* ---------- Design tokens ---------- */
+:root {
+  /* Color */
+  --ink: #15171e;          /* body text */
+  --paper: #f7f7f4;        /* page background */
+  --paper-raised: #ffffff; /* surfaces that sit above the page */
+  --indigo: #3d2fd9;       /* brand / header */
+  --indigo-dark: #291fa6;  /* hover state for indigo */
+  --amber: #f5a623;        /* accent: Community Service / Educational */
+  --green: #166b40;        /* accent: Environmental */
+  --coral: #c23a28;        /* accent: Health and Wellness */
+  --line: #e3e1d8;         /* hairline borders */
+
+  /* Type */
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+
+  /* Layout */
+  --wrap-width: 1080px;
+}
+
+/* ---------- Reset & base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    nav {
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.6;
+}
 
-        li {
-            display: inline;
-            margin-right: 15px;
-        }
+img {
+  max-width: 100%;
+  display: block;
+}
 
-        a {
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
+a {
+  color: inherit;
+}
 
-            &:hover {
-                color: #0066cc;
-            }
-        }
-    }
-}                
+/* Shared max-width container used by header, content, and footer */
+.wrap {
+  max-width: var(--wrap-width);
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+}
+
+/* Visible keyboard focus everywhere (accessibility) */
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--amber);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ---------- Header ---------- */
+.site-header {
+  background: var(--indigo);
+  color: #ffffff;
+}
+
+.site-header .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  padding-block: 1.1rem;
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  text-decoration: none;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.brand span {
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+.site-header nav ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+.site-header nav a {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+  padding-bottom: 3px;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.site-header nav a:hover,
+.site-header nav a:focus-visible {
+  color: #ffffff;
+  border-bottom-color: var(--amber);
+}
+
+/* ---------- Page content ---------- */
+.page-content {
+  padding-block: clamp(2rem, 5vw, 3.5rem);
+  min-height: 50vh;
+}
+
+.page-content h1 {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--indigo);
+  margin: 0 0 0.4rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 3px solid var(--amber);
+  display: inline-block;
+}
+
+.page-content h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  max-width: 18ch;
+  margin: 1.25rem 0 0.75rem;
+}
+
+.page-content > p {
+  max-width: 65ch;
+  color: #3a3d47;
+}
+
+/* ---------- Home page ---------- */
+.page-home .main-logo {
+  margin-top: 2rem;
+  max-width: 320px;
+  border-radius: 8px;
+}
+
+/* ---------- Organizations & Projects: "network node" list ---------- */
+.page-organizations ul,
+.page-projects ul {
+  list-style: none;
+  margin: 2rem 0 0;
+  padding: 0;
+}
+
+.page-organizations li,
+.page-projects li {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem 1.25rem;
+  margin-bottom: 0.75rem;
+  background: var(--paper-raised);
+  border-left: 5px solid var(--indigo);
+  border-radius: 6px;
+}
+
+/* Cycle accent colors so the list reads as a varied network, not a stack of clones */
+.page-organizations li:nth-child(3n + 2),
+.page-projects li:nth-child(3n + 2) {
+  border-left-color: var(--amber);
+}
+
+.page-organizations li:nth-child(3n + 3),
+.page-projects li:nth-child(3n + 3) {
+  border-left-color: var(--green);
+}
+
+.page-organizations li img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.page-organizations li strong {
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+.page-projects li {
+  display: block;
+}
+
+/* ---------- Categories: colored tiles ---------- */
+.page-categories ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 2rem 0 0;
+  padding: 0;
+}
+
+.page-categories li {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: #ffffff;
+  padding: 1.1rem 1.5rem;
+  border-radius: 6px;
+  background: var(--indigo);
+}
+
+.page-categories li:nth-child(1) { background: var(--green); }  /* Environmental */
+.page-categories li:nth-child(2) { background: var(--indigo); } /* Educational */
+.page-categories li:nth-child(3) { background: var(--amber); color: var(--ink); } /* Community Service */
+.page-categories li:nth-child(4) { background: var(--coral); } /* Health and Wellness */
+
+/* ---------- Footer ---------- */
+/* Kept quiet on purpose — the header carries the bold color, not every element */
+footer {
+  border-top: 1px solid var(--line);
+  padding-block: 1.5rem;
+  margin-top: 2rem;
+}
+
+footer p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #6b6e78;
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 600px) {
+  .site-header .wrap {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .page-organizations li,
+  .page-projects li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
