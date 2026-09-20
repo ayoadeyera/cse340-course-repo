@@ -52,27 +52,24 @@ app.get('/categories', async (req, res) => {
     res.render('categories', { title });
 });
 
-app.listen(PORT, async () => {
+const server = app.listen(PORT, async () => {
   try {
     await testConnection();
     console.log(`Server is running at http://127.0.0.1:${PORT}`);
     console.log(`Environment: ${NODE_ENV}`);
-    console.log('>>> Active handles right after listen:', process._getActiveHandles().length);
   } catch (error) {
     console.error('Error connecting to the database:', error);
   }
 });
 
-let seconds = 0;
-setInterval(() => {
-  seconds++;
-  console.log('>>> Still alive at', seconds, 'seconds. Active handles:', process._getActiveHandles().length);
-}, 1000);
+server.on('close', () => {
+  console.log('>>> HTTP SERVER CLOSED at', new Date().toISOString());
+});
 
-process.on('beforeExit', (code) => {
-  console.log('>>> beforeExit fired. Active handles:', process._getActiveHandles().length);
+server.on('error', (err) => {
+  console.log('>>> HTTP SERVER ERROR:', err);
 });
 
 process.on('exit', (code) => {
-  console.log('>>> Process is exiting. Exit code:', code);
+  console.log('>>> Process exiting. Exit code:', code, '| server.listening:', server.listening);
 });
