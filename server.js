@@ -45,10 +45,9 @@ app.get('/organizations', async (req, res) => {
 
 app.get('/projects', async (req, res) => {
     const projects = await getAllProjects();
-    console.log('Projects from database:', projects); // Course verification requirement
-
-    // const title = 'Projects';
-    // res.render('projects', { title, projects });
+    console.log('Projects from database:', projects);
+    const title = 'Projects';
+    res.render('projects', { title, projects });
 });
 app.get('/categories', async (req, res) => {
     const title = 'Categories';
