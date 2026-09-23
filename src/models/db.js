@@ -13,7 +13,9 @@ import { Pool } from 'pg';
  */
 const pool = new Pool({
     connectionString: process.env.DB_URL,
-    ssl: true
+    ssl: {
+        rejectUnauthorized: false
+    }
 });
 
 /**
@@ -34,11 +36,6 @@ const pool = new Pool({
  * export a reference to the pool object. This allows us to use the same name for the
  * export regardless of whether we are in development or production mode.
  */
-
- ssl: {
-     rejectUnauthorized: false
- }
-
 let db = null;
 
 if (process.env.NODE_ENV === 'development' && process.env.ENABLE_SQL_LOGGING === 'true') {
