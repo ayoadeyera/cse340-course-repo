@@ -71,3 +71,30 @@ VALUES
     ('Educational'),
     ('Community Service'),
     ('Health and Wellness');
+
+-- Project-Categories relationship table
+CREATE TABLE project_categories (
+    project_id INT NOT NULL REFERENCES projects(project_id) ON DELETE CASCADE,
+    category_id INT NOT NULL REFERENCES categories(category_id) ON DELETE CASCADE,
+    PRIMARY KEY (project_id, category_id)
+);
+
+
+-- Seed data for project_categories
+INSERT INTO project_categories (project_id, category_id)
+VALUES
+    (1, 3),           -- Community Center Ramp Construction: Community Service
+    (2, 3), (2, 4),   -- Playground Safety Upgrade: Community Service, Health and Wellness
+    (3, 3), (3, 4),   -- Senior Home Weatherization: Community Service, Health and Wellness
+    (4, 3),           -- Community Tool Shed Build: Community Service
+    (5, 3), (5, 2),   -- Youth Center Interior Painting: Community Service, Educational
+    (6, 1),           -- Fall Raised-Bed Planting: Environmental
+    (7, 1),           -- Community Orchard Pruning & Mulching: Environmental
+    (8, 1),           -- Urban Greenhouse Glazing & Prep: Environmental
+    (9, 1), (9, 3),   -- Harvest Box Packing & Distribution: Environmental, Community Service
+    (10, 1),          -- Pollinator Garden Expansion: Environmental
+    (11, 1), (11, 3), -- City Park Trail Cleanup: Environmental, Community Service
+    (12, 3), (12, 4), -- Homeless Shelter Meal Service: Community Service, Health and Wellness
+    (13, 2),          -- After-School Math & Reading Tutoring: Educational
+    (14, 3),          -- Warm Clothes & Coat Drive Sorting: Community Service
+    (15, 3), (15, 4); -- Community Food Bank Shelf Restocking: Community Service, Health and Wellness
