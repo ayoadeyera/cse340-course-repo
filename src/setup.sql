@@ -55,3 +55,19 @@ VALUES
     (3, 'After-School Math & Reading Tutoring', 'Provide 1-on-1 homework help and reading practice for elementary school students.', 'Lincoln Elementary Library', '2026-10-21'),
     (3, 'Warm Clothes & Coat Drive Sorting', 'Sort, size, and organize donated winter coats, gloves, and blankets for distribution.', 'Civic Auditorium Room 104', '2026-10-28'),
     (3, 'Community Food Bank Shelf Restocking', 'Unload inventory pallets, check expiration dates, and restock non-perishable pantry shelves.', 'Metro Food Bank, Bay 3', '2026-11-04');
+
+
+
+    -- Categories table setup
+CREATE TABLE categories (
+    category_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- Seed data for the categories table
+INSERT INTO categories (name)
+VALUES
+    ('Environmental'),
+    ('Educational'),
+    ('Community Service'),
+    ('Health and Wellness');
