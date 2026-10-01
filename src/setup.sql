@@ -23,14 +23,13 @@ VALUES
     -- Service projects table setup
 CREATE TABLE projects (
     project_id SERIAL PRIMARY KEY,
-    organization_id INT NOT NULL REFERENCES organizations(organization_id) ON DELETE CASCADE,
+    organization_id INT NOT NULL,
     title VARCHAR(150) NOT NULL,
     description TEXT NOT NULL,
     location VARCHAR(255) NOT NULL,
-    date DATE NOT NULL
+    date DATE NOT NULL,
+    FOREIGN KEY (organization_id) REFERENCES organizations(organization_id) ON DELETE CASCADE
 );
-
-
 
 -- Seed data for the projects table (5 projects per organization)
 INSERT INTO projects (organization_id, title, description, location, date)
@@ -74,9 +73,11 @@ VALUES
 
 -- Project-Categories relationship table
 CREATE TABLE project_categories (
-    project_id INT NOT NULL REFERENCES projects(project_id) ON DELETE CASCADE,
-    category_id INT NOT NULL REFERENCES categories(category_id) ON DELETE CASCADE,
-    PRIMARY KEY (project_id, category_id)
+    project_id INT NOT NULL,
+    category_id INT NOT NULL,
+    PRIMARY KEY (project_id, category_id),
+    FOREIGN KEY (project_id) REFERENCES projects(project_id) ON DELETE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE CASCADE
 );
 
 
