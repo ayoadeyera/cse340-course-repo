@@ -7,7 +7,7 @@ const showCategoriesPage = async (req, res) => {
     const categories = await getAllCategories();
     const title = 'Service Categories';
 
-    res.render('categories', { title, categories });
+    res.render('categories', { title, categories, pageClass: 'page-categories' });
 };
 
 const showCategoryDetailsPage = async (req, res, next) => {
