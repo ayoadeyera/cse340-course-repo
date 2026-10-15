@@ -12,3 +12,4 @@ const getAllCategories = async () => {
 };
 
 export { getAllCategories };
+
