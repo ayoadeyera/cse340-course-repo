@@ -11,7 +11,19 @@ const showOrganizationsPage = async (req, res) => {
 };
 
 const showOrganizationDetailsPage = async (req, res, next) => {
-    const organizationId = req.params.id;
+    const organizationId = Number(req.params.id);
+
+    // Reject anything that isn't a valid database integer ID
+    if (
+        !Number.isInteger(organizationId) ||
+        organizationId <= 0 ||
+        organizationId > 2147483647
+    ) {
+        const err = new Error('Organization Not Found');
+        err.status = 404;
+        return next(err);
+    }
+
     const organizationDetails = await getOrganizationDetails(organizationId);
 
     // If no organization has this ID, send a 404 to the error handler
