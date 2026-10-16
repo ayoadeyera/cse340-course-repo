@@ -14,7 +14,19 @@ const showProjectsPage = async (req, res) => {
 };
 
 const showProjectDetailsPage = async (req, res, next) => {
-    const projectId = req.params.id;
+    const projectId = Number(req.params.id);
+
+    // Reject anything that isn't a valid database integer ID
+    if (
+        !Number.isInteger(projectId) ||
+        projectId <= 0 ||
+        projectId > 2147483647
+    ) {
+        const err = new Error('Project Not Found');
+        err.status = 404;
+        return next(err);
+    }
+
     const project = await getProjectDetails(projectId);
 
     // If no project has this id, send a 404 to the error handler
@@ -29,6 +41,5 @@ const showProjectDetailsPage = async (req, res, next) => {
 
     res.render('project', { title, project, categories, pageClass: 'page-project' });
 };
-
 // Export any controller functions
 export { showProjectsPage, showProjectDetailsPage };
