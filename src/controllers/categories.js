@@ -23,7 +23,7 @@ const showCategoryDetailsPage = async (req, res, next) => {
         return next(err);
     }
 
-const category = await getCategoryDetails(categoryId);
+    const category = await getCategoryDetails(categoryId);
 
     // If no category has this ID, send a 404 to the error handler
     if (!category) {

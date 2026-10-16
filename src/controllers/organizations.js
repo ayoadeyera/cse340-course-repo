@@ -10,7 +10,6 @@ const showOrganizationsPage = async (req, res) => {
     res.render('organizations', { title, organizations, pageClass: 'page-organizations' });
 };
 
-
 const showOrganizationDetailsPage = async (req, res, next) => {
     const organizationId = req.params.id;
     const organizationDetails = await getOrganizationDetails(organizationId);
@@ -27,7 +26,6 @@ const showOrganizationDetailsPage = async (req, res, next) => {
 
     res.render('organization', { title, organizationDetails, projects, pageClass: 'page-projects' });
 };
-
 
 // Export any controller functions
 export { showOrganizationsPage, showOrganizationDetailsPage };
