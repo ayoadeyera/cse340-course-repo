@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/main.css">
 </head>
-<body class="page-<%= title.toLowerCase() %>">
+<body class="<%= locals.pageClass || '' %>">
     <header class="site-header">
         <div class="wrap">
             <a class="brand" href="/">CSE 340 <span>Service Network</span></a>

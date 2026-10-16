@@ -10,7 +10,7 @@ const showProjectsPage = async (req, res) => {
     const projects = await getUpcomingProjects(NUMBER_OF_UPCOMING_PROJECTS);
     const title = 'Upcoming Service Projects';
 
-    res.render('projects', { title, projects });
+    res.render('projects', { title, projects, pageClass: 'page-projects' });
 };
 
 const showProjectDetailsPage = async (req, res, next) => {
@@ -27,7 +27,7 @@ const showProjectDetailsPage = async (req, res, next) => {
     const categories = await getCategoriesByProjectId(projectId);
     const title = project.title;
 
-    res.render('project', { title, project, categories });
+    res.render('project', { title, project, categories, pageClass: 'page-project' });
 };
 
 // Export any controller functions
