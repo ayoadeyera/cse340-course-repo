@@ -3,14 +3,15 @@
         <h1><%= title %></h1>
         <p>Here are a few of our partner organizations:</p>
         <ul>
-            
             <% organizations.forEach(organization => { %>
-                <li><img src="/images/<%= organization.logo_filename %>" alt="<%= organization.name %> logo"><strong><%= organization.name %></strong>: <%= organization.contact_email %>
-                <a href="/organization/<%= organization.organization_id %>"><%= organization.name %></a>
+                <li>
+                    <img src="/images/<%= organization.logo_filename %>" alt="<%= organization.name %> logo">
+                    <div>
+                        <strong><a href="/organization/<%= organization.organization_id %>"><%= organization.name %></a></strong><br>
+                        <%= organization.contact_email %>
+                    </div>
                 </li>
             <% }); %>
-
-
         </ul>
     </main>
 <%- include('partials/footer') %>
