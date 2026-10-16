@@ -266,3 +266,36 @@ footer p {
     align-items: flex-start;
   }
 }
+
+/* ---------- Category tags (project details page) ---------- */
+.category-tags {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0.75rem 0 1.5rem;
+  padding: 0;
+}
+
+.category-tags a {
+  display: inline-block;
+  padding: 0.35rem 0.9rem;
+  border: 2px solid var(--indigo);
+  border-radius: 999px;
+  color: var(--indigo-dark);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.category-tags a:hover,
+.category-tags a:focus-visible {
+  background: var(--indigo);
+  color: #ffffff;
+}
+
+.category-tags a:focus-visible {
+  outline: 3px solid var(--amber);
+  outline-offset: 2px;
+}
