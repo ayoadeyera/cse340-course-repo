@@ -7,7 +7,7 @@ const showOrganizationsPage = async (req, res) => {
     const organizations = await getAllOrganizations();
     const title = 'Our Partner Organizations';
 
-    res.render('organizations', { title, organizations });
+    res.render('organizations', { title, organizations, pageClass: 'page-organizations' });
 };
 
 
@@ -25,7 +25,7 @@ const showOrganizationDetailsPage = async (req, res, next) => {
     const projects = await getProjectsByOrganizationId(organizationId);
     const title = 'Organization Details';
 
-    res.render('organizations', { title, organizations, pageClass: 'page-organizations' });
+    res.render('organization', { title, organizationDetails, projects });
 };
 
 
