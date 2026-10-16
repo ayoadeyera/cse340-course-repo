@@ -25,7 +25,7 @@ const showOrganizationDetailsPage = async (req, res, next) => {
     const projects = await getProjectsByOrganizationId(organizationId);
     const title = 'Organization Details';
 
-    res.render('organization', { title, organizationDetails, projects });
+    res.render('organization', { title, organizationDetails, projects, pageClass: 'page-projects' });
 };
 
 
