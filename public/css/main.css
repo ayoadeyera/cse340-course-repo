@@ -327,3 +327,66 @@ footer p {
     background-color: #d1ecf1;
     border-color: #bee5eb;
 }
+
+/* ---------- Forms ---------- */
+.page-content form {
+  max-width: 560px;
+  margin: 1.5rem 0;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="date"],
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 0.65rem 0.8rem;
+  border: 2px solid #c9cbd6;
+  border-radius: 8px;
+  font: inherit;
+  background: #ffffff;
+}
+
+.form-group textarea {
+  min-height: 130px;
+  resize: vertical;
+}
+
+.form-group input:focus-visible,
+.form-group textarea:focus-visible,
+.form-group select:focus-visible {
+  outline: 3px solid var(--amber);
+  outline-offset: 1px;
+  border-color: var(--indigo);
+}
+
+.form-group input[type="checkbox"] {
+  margin-right: 0.5rem;
+  transform: scale(1.2);
+}
+
+.page-content form button[type="submit"] {
+  padding: 0.7rem 1.4rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--indigo);
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.page-content form button[type="submit"]:hover {
+  background: var(--indigo-dark);
+}
