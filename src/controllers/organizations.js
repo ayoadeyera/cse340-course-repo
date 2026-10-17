@@ -26,7 +26,15 @@ const organizationValidation = [
         .isEmail()
         .withMessage('Please provide a valid email address')
         .bail()
-        .normalizeEmail()
+        .normalizeEmail(),
+    body('logoFilename')
+        .optional()
+        .trim()
+        .notEmpty()
+        .withMessage('Logo filename is required')
+        .bail()
+        .matches(/^[\w-]+\.(png|jpg|jpeg|gif|svg|webp)$/i)
+        .withMessage('Logo filename must be an image file name such as logo.png')
 ];
 
 // Define any controller functions
@@ -121,8 +129,32 @@ const showEditOrganizationForm = async (req, res, next) => {
     res.render('edit-organization', { title, organizationDetails });
 };
 
-const processEditOrganizationForm = async (req, res) => {
-    const organizationId = req.params.id;
+const processEditOrganizationForm = async (req, res, next) => {
+    const organizationId = Number(req.params.id);
+
+    // Reject anything that isn't a valid database integer ID
+    if (
+        !Number.isInteger(organizationId) ||
+        organizationId <= 0 ||
+        organizationId > 2147483647
+    ) {
+        const err = new Error('Organization Not Found');
+        err.status = 404;
+        return next(err);
+    }
+
+    // Check for validation errors
+    const results = validationResult(req);
+    if (!results.isEmpty()) {
+        // Validation failed - flash each error message
+        results.array().forEach((error) => {
+            req.flash('error', error.msg);
+        });
+
+        // Redirect back to the edit form for this organization
+        return res.redirect(`/edit-organization/${organizationId}`);
+    }
+
     const { name, description, contactEmail, logoFilename } = req.body;
 
     await updateOrganization(organizationId, name, description, contactEmail, logoFilename);
@@ -132,5 +164,6 @@ const processEditOrganizationForm = async (req, res) => {
 
     res.redirect(`/organization/${organizationId}`);
 };
+
 // Export any controller functions
 export { showOrganizationsPage, showOrganizationDetailsPage, showNewOrganizationForm, processNewOrganizationForm, organizationValidation, showEditOrganizationForm, processEditOrganizationForm };
