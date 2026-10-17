@@ -1,5 +1,4 @@
 // Import any needed model functions
-import { getUpcomingProjects, getProjectDetails } from '../models/projects.js';
 import { getCategoriesByProjectId } from '../models/categories.js';
 import { createProject, getUpcomingProjects, getProjectDetails, updateProject } from '../models/projects.js';
 import { getAllOrganizations } from '../models/organizations.js';
