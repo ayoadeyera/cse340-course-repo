@@ -20,11 +20,14 @@ const organizationValidation = [
         .isLength({ max: 500 })
         .withMessage('Organization description cannot exceed 500 characters'),
     body('contactEmail')
-        .normalizeEmail()
+        .trim()
         .notEmpty()
         .withMessage('Contact email is required')
+        .bail()
         .isEmail()
         .withMessage('Please provide a valid email address')
+        .bail()
+        .normalizeEmail()
 ];
 
 // Define any controller functions
