@@ -170,5 +170,6 @@ export {
     getUpcomingProjects,
     getProjectDetails,
     getProjectsByCategoryId,
-    createProject
+    createProject,
+    updateProject
 };
