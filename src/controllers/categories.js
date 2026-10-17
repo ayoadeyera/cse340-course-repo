@@ -1,9 +1,8 @@
 // Import any needed model functions
 
+import { body, validationResult } from 'express-validator';
 import { getAllCategories, getCategoryDetails, getCategoriesByProjectId, updateCategoryAssignments, createCategory, updateCategory } from '../models/categories.js';
-
 import { getProjectsByCategoryId, getProjectDetails} from '../models/projects.js';
-
 
 // Define any controller functions
 const showCategoriesPage = async (req, res) => {
