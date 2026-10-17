@@ -1,4 +1,6 @@
-import db from './db.js';
+
+import db, { pool } from './db.js';
+
 
 const getAllCategories = async () => {
     const query = `
@@ -42,4 +44,44 @@ const getCategoriesByProjectId = async (projectId) => {
     return result.rows;
 };
 
-export { getAllCategories, getCategoryDetails, getCategoriesByProjectId };
+
+const assignCategoryToProject = async (client, categoryId, projectId) => {
+    const query = `
+        INSERT INTO project_categories (category_id, project_id)
+        VALUES ($1, $2);
+    `;
+
+    await client.query(query, [categoryId, projectId]);
+};
+
+const updateCategoryAssignments = async (projectId, categoryIds) => {
+    const client = await pool.connect();
+
+    try {
+        await client.query('BEGIN');
+
+        await client.query(
+            'DELETE FROM project_categories WHERE project_id = $1',
+            [projectId]
+        );
+
+        for (const categoryId of categoryIds) {
+            await assignCategoryToProject(client, categoryId, projectId);
+        }
+
+        await client.query('COMMIT');
+    } catch (error) {
+        await client.query('ROLLBACK');
+        throw error;
+    } finally {
+        client.release();
+    }
+};
+
+
+export {
+    getAllCategories,
+    getCategoryDetails,
+    getCategoriesByProjectId,
+    updateCategoryAssignments
+};

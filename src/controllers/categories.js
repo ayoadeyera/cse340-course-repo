@@ -1,6 +1,9 @@
 // Import any needed model functions
-import { getAllCategories, getCategoryDetails } from '../models/categories.js';
-import { getProjectsByCategoryId } from '../models/projects.js';
+
+import { getAllCategories, getCategoryDetails, getCategoriesByProjectId, updateCategoryAssignments} from '../models/categories.js';
+
+import { getProjectsByCategoryId, getProjectDetailsg} from '../models/projects.js';
+
 
 // Define any controller functions
 const showCategoriesPage = async (req, res) => {
@@ -38,5 +41,72 @@ const showCategoryDetailsPage = async (req, res, next) => {
     res.render('category', { title, category, projects, pageClass: 'page-projects' });
 };
 
+
+const showAssignCategoriesForm = async (req, res, next) => {
+    try {
+        const projectId = Number(req.params.projectId);
+
+        if (!Number.isInteger(projectId) || projectId <= 0) {
+            return next(Object.assign(new Error('Project Not Found'), { status: 404 }));
+        }
+
+        const projectDetails = await getProjectDetails(projectId);
+
+        if (!projectDetails) {
+            return next(Object.assign(new Error('Project Not Found'), { status: 404 }));
+        }
+
+        const categories = await getAllCategories();
+        const assignedCategories = await getCategoriesByProjectId(projectId);
+
+        res.render('assign-categories', {
+            title: 'Assign Categories to Project',
+            projectId,
+            projectDetails,
+            categories,
+            assignedCategories
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+const processAssignCategoriesForm = async (req, res, next) => {
+    try {
+        const projectId = Number(req.params.projectId);
+
+        if (!Number.isInteger(projectId) || projectId <= 0) {
+            return next(Object.assign(new Error('Project Not Found'), { status: 404 }));
+        }
+
+        const project = await getProjectDetails(projectId);
+
+        if (!project) {
+            return next(Object.assign(new Error('Project Not Found'), { status: 404 }));
+        }
+
+        const selected = req.body.categoryIds || [];
+        const categoryIds = Array.isArray(selected) ? selected : [selected];
+        const allCategories = await getAllCategories();
+        const validIds = new Set(allCategories.map(c => Number(c.category_id)));
+
+        if (categoryIds.some(id => !/^\d+$/.test(String(id)) || !validIds.has(Number(id)))) {
+            req.flash('error', 'Invalid category selection.');
+            return res.redirect(`/assign-categories/${projectId}`);
+        }
+
+        await updateCategoryAssignments(
+            projectId,
+            [...new Set(categoryIds.map(Number))]
+        );
+
+        req.flash('success', 'Categories updated successfully!');
+        return res.redirect(`/project/${projectId}`);
+    } catch (error) {
+        next(error);
+    }
+};
+
 // Export any controller functions
-export { showCategoriesPage, showCategoryDetailsPage };
+
+export { showCategoriesPage, showCategoryDetailsPage, showAssignCategoriesForm, processAssignCategoriesForm };
