@@ -1,7 +1,7 @@
 // Import any needed model functions
 import { getUpcomingProjects, getProjectDetails } from '../models/projects.js';
 import { getCategoriesByProjectId } from '../models/categories.js';
-import { createProject } from '../models/projects.js';
+import { createProject, getUpcomingProjects, getProjectDetails, updateProject } from '../models/projects.js';
 import { getAllOrganizations } from '../models/organizations.js';
 import { body, validationResult } from 'express-validator';
 
@@ -114,6 +114,95 @@ const processNewProjectForm = async (req, res) => {
     }
 };
 
+
+const showEditProjectForm = async (req, res, next) => {
+    try {
+        const projectId = Number(req.params.id);
+
+        if (!Number.isInteger(projectId) || projectId <= 0) {
+            const error = new Error('Project Not Found');
+            error.status = 404;
+            return next(error);
+        }
+
+        const project = await getProjectDetails(projectId);
+
+        if (!project) {
+            const error = new Error('Project Not Found');
+            error.status = 404;
+            return next(error);
+        }
+
+        const organizations = await getAllOrganizations();
+
+        res.render('edit-project', {
+            title: 'Edit Service Project',
+            project,
+            organizations
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+const processEditProjectForm = async (req, res, next) => {
+    const projectId = Number(req.params.id);
+
+    if (!Number.isInteger(projectId) || projectId <= 0) {
+        const error = new Error('Project Not Found');
+        error.status = 404;
+        return next(error);
+    }
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        errors.array().forEach(error => {
+            req.flash('error', error.msg);
+        });
+
+        return res.redirect(`/edit-project/${projectId}`);
+    }
+
+    try {
+        const {
+            title,
+            description,
+            location,
+            date,
+            organizationId
+        } = req.body;
+
+        const organizations = await getAllOrganizations();
+        const organizationExists = organizations.some(
+            org => Number(org.organization_id) === Number(organizationId)
+        );
+
+        if (!organizationExists) {
+            req.flash('error', 'Please select a valid organization.');
+            return res.redirect(`/edit-project/${projectId}`);
+        }
+
+        await updateProject(
+            projectId,
+            title,
+            description,
+            location,
+            date,
+            Number(organizationId)
+        );
+
+        req.flash('success', 'Service project updated successfully!');
+        return res.redirect(`/project/${projectId}`);
+    } catch (error) {
+        if (error.message === 'Project not found') {
+            error.status = 404;
+        }
+        next(error);
+    }
+};
+
+
 // Export any controller functions
 
 export {
@@ -121,5 +210,8 @@ export {
     showProjectDetailsPage,
     showNewProjectForm,
     processNewProjectForm,
+    showEditProjectForm,
+    processEditProjectForm,
     projectValidation
 };
+
