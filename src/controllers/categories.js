@@ -2,7 +2,7 @@
 
 import { getAllCategories, getCategoryDetails, getCategoriesByProjectId, updateCategoryAssignments} from '../models/categories.js';
 
-import { getProjectsByCategoryId, getProjectDetailsg} from '../models/projects.js';
+import { getProjectsByCategoryId, getProjectDetails} from '../models/projects.js';
 
 
 // Define any controller functions
